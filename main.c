@@ -76,10 +76,24 @@ void chamadaQuickSortMeio(int **vetor, int ini, int fim, double *tempos, int pos
 int main(){
     srand(time(NULL));
 
-    double tempos[9];
+    double tempos[81];
     int seletor = 0, tamanhoPequeno = 250, tamanhoMedio = 1500, tamanhoGrande = 800500;
 
-    int vetorPequeno[tamanhoPequeno], vetorMedio[tamanhoMedio], vetorGrande[tamanhoGrande];
+    int vetorPequenoAleartorio[tamanhoPequeno], vetorPequenoDecrescente[tamanhoPequeno], vetorPequenoCrescente[tamanhoPequeno];
+    int vetorMedioAleartorio[tamanhoMedio], vetorMedioDecrescente[tamanhoMedio], vetorMedioCrescente[tamanhoMedio];
+    int vetorGrandeAleartorio[tamanhoGrande], vetorGrandeDecrescente[tamanhoGrande], vetorGrandeCrescente[tamanhoGrande];
+
+    populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+    populaVetorCrescente(&vetorPequenoDecrescente, tamanhoPequeno);
+    populaVetorDecrescente(&vetorPequenoCrescente, tamanhoPequeno);
+
+    populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+    populaVetorCrescente(&vetorMedioDecrescente, tamanhoMedio); // TODO: Implementar corretamente esses vetores nas chamadas e arrumar o vetor de tempos
+    populaVetorDecrescente(&vetorMedioCrescente, tamanhoMedio);
+
+    populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+    populaVetorCrescente(&vetorGrandeDecrescente, tamanhoGrande);
+    populaVetorDecrescente(&vetorGrandeCrescente, tamanhoGrande);
 
     printf("-=-= ANALISE ASSINTOTICA =-=-\n\n");
     while(seletor != 99){
@@ -270,6 +284,7 @@ int main(){
 
                 printf("Ordem decrescente -");
                 populaVetorDecrescente(&vetorGrande, tamanhoGrande);
+
                 chamadaQuickSortMeio(&vetorGrande, 0, tamanhoGrande, tempos, 8);
 
                 printf("\nTempos finais: ");
