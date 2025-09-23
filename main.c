@@ -88,7 +88,7 @@ int main(){
     populaVetorDecrescente(&vetorPequenoCrescente, tamanhoPequeno);
 
     populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
-    populaVetorCrescente(&vetorMedioDecrescente, tamanhoMedio);
+    populaVetorCrescente(&vetorMedioDecrescente, tamanhoMedio); // TODO: Implementar corretamente esses vetores nas chamadas e arrumar o vetor de tempos
     populaVetorDecrescente(&vetorMedioCrescente, tamanhoMedio);
 
     populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
@@ -284,6 +284,7 @@ int main(){
 
                 printf("Ordem decrescente -");
                 populaVetorDecrescente(&vetorGrande, tamanhoGrande);
+
                 chamadaQuickSortMeio(&vetorGrande, 0, tamanhoGrande, tempos, 8);
 
                 printf("\nTempos finais: ");
