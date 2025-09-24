@@ -4,7 +4,7 @@
 
 int* populaVetorAleartorio(int **vetor, int tamanho){
     for(int i = 0; i < tamanho; i++){
-        vetor[i] = rand() % tamanho;
+        vetor[i] = rand() % (int)(tamanho + 0.7*tamanho);
     }
     return;
 }
@@ -25,10 +25,11 @@ int* populaVetorCrescente(int **vetor, int tamanho){
 
 void chamadaBubbleClassico(int **vetor, int tamanho, double *tempos, int pos){
     clock_t inicio, fim;
+    int resultado[tamanho];
     double tempo;
     // imprime vetor
     inicio = clock();
-    int resultado[tamanho] = BubbleSortClassico(*vetor, tamanho);
+    resultado[tamanho] = BubbleSortClassico(*vetor, tamanho);
     fim = clock();
     tempo = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
     //imprimir vetor resultado
@@ -38,10 +39,11 @@ void chamadaBubbleClassico(int **vetor, int tamanho, double *tempos, int pos){
 
 void chamadaBubbleMelhorado(int **vetor, int tamanho, double *tempos, int pos){
     clock_t inicio, fim;
+    int resultado[tamanho];
     double tempo;
     // imprime vetor
     inicio = clock();
-    int resultado[tamanho] = BubbleSortMelhorado(*vetor, tamanho);
+    resultado[tamanho] = BubbleSortMelhorado(*vetor, tamanho);
     fim = clock();
     tempo = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
     //imprimir vetor resultado
@@ -50,24 +52,26 @@ void chamadaBubbleMelhorado(int **vetor, int tamanho, double *tempos, int pos){
 }
 
 void chamadaQuickSortInicio(int **vetor, int ini, int fim, double *tempos, int pos){
-    clock_t inicio, fim;
+    clock_t inicio, fin;
+    int resultado[fim];
     double tempo;
     // imprime vetor
     inicio = clock();
-    int resultado[fim] = quickSortInicio(*vetor, ini, fim);
-    tempo = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
+    resultado[fim] = quickSortInicio(*vetor, ini, fim);
+    tempo = ((double)(fin - inicio)) / CLOCKS_PER_SEC;
     //imprimir vetor resultado
     printf("Tempo: %f\n", tempo);
     tempos[pos] = tempo;
 }
 
 void chamadaQuickSortMeio(int **vetor, int ini, int fim, double *tempos, int pos){
-    clock_t inicio, fim;
+    clock_t inicio, fin;
+    int resultado[fim];
     double tempo;
     // imprime vetor
     inicio = clock();
-    int resultado[fim] = quickSortMeio(*vetor, ini, fim);
-    tempo = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
+    resultado[fim] = quickSortMeio(*vetor, ini, fim);
+    tempo = ((double)(fin - inicio)) / CLOCKS_PER_SEC;
     //imprimir vetor resultado
     printf("Tempo: %f\n", tempo);
     tempos[pos] = tempo;
@@ -77,7 +81,7 @@ int main(){
     srand(time(NULL));
 
     double tempos[81];
-    int seletor = 0, tamanhoPequeno = 250, tamanhoMedio = 1500, tamanhoGrande = 800500;
+    int seletor = 0, tamanhoPequeno = 1000, tamanhoMedio = 5000, tamanhoGrande = 10000;
 
     int vetorPequenoAleartorio[tamanhoPequeno], vetorPequenoDecrescente[tamanhoPequeno], vetorPequenoCrescente[tamanhoPequeno];
     int vetorMedioAleartorio[tamanhoMedio], vetorMedioDecrescente[tamanhoMedio], vetorMedioCrescente[tamanhoMedio];
@@ -117,42 +121,42 @@ int main(){
                 printf("DEBUG: Bubble Simples\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubbleClassico(&vetorPequeno, tamanhoPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubbleClassico(&vetorPequenoAleartorio, tamanhoPequeno, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubbleClassico(&vetorPequeno, tamanhoPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubbleClassico(&vetorPequenoAleartorio, tamanhoPequeno, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubbleClassico(&vetorPequeno, tamanhoPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubbleClassico(&vetorPequenoAleartorio, tamanhoPequeno, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubbleClassico(&vetorMedio, tamanhoMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubbleClassico(&vetorMedioAleartorio, tamanhoMedio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubbleClassico(&vetorMedio, tamanhoMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubbleClassico(&vetorMedioAleartorio, tamanhoMedio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubbleClassico(&vetorMedio, tamanhoMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubbleClassico(&vetorMedioAleartorio, tamanhoMedio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubbleClassico(&vetorGrande, tamanhoGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubbleClassico(&vetorGrandeAleartorio, tamanhoGrande, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubbleClassico(&vetorGrande, tamanhoGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubbleClassico(&vetorGrandeAleartorio, tamanhoGrande, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubbleClassico(&vetorGrande, tamanhoGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubbleClassico(&vetorGrandeAleartorio, tamanhoGrande, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -161,42 +165,42 @@ int main(){
                 printf("DEBUG: Bubble Melhorado\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubbleMelhorado(&vetorPequeno, tamanhoPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubbleMelhorado(&vetorPequenoAleartorio, tamanhoPequeno, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubbleMelhorado(&vetorPequeno, tamanhoPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubbleMelhorado(&vetorPequenoAleartorio, tamanhoPequeno, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubbleMelhorado(&vetorPequeno, tamanhoPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubbleMelhorado(&vetorPequenoAleartorio, tamanhoPequeno, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubbleMelhorado(&vetorMedio, tamanhoMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubbleMelhorado(&vetorMedioAleartorio, tamanhoMedio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubbleMelhorado(&vetorMedio, tamanhoMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubbleMelhorado(&vetorMedioAleartorio, tamanhoMedio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubbleMelhorado(&vetorMedio, tamanhoMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubbleMelhorado(&vetorMedioAleartorio, tamanhoMedio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubbleMelhorado(&vetorGrande, tamanhoGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubbleMelhorado(&vetorGrandeAleartorio, tamanhoGrande, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubbleMelhorado(&vetorGrande, tamanhoGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubbleMelhorado(&vetorGrandeAleartorio, tamanhoGrande, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubbleMelhorado(&vetorGrande, tamanhoGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubbleMelhorado(&vetorGrandeAleartorio, tamanhoGrande, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -205,42 +209,42 @@ int main(){
                 printf("DEBUG: QuickSort pivo no comeco\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaQuickSortInicio(&vetorPequeno, 0, tamanhoPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaQuickSortInicio(&vetorPequenoAleartorio, 0, tamanhoPequeno, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaQuickSortInicio(&vetorPequeno, 0, tamanhoPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaQuickSortInicio(&vetorPequenoAleartorio, 0, tamanhoPequeno, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaQuickSortInicio(&vetorPequeno, 0, tamanhoPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaQuickSortInicio(&vetorPequenoAleartorio, 0, tamanhoPequeno, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaQuickSortInicio(&vetorMedio, 0, tamanhoMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaQuickSortInicio(&vetorMedioAleartorio, 0, tamanhoMedio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaQuickSortInicio(&vetorMedio, 0, tamanhoMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaQuickSortInicio(&vetorMedioAleartorio, 0, tamanhoMedio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaQuickSortInicio(&vetorMedio, 0, tamanhoMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaQuickSortInicio(&vetorMedioAleartorio, 0, tamanhoMedio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaQuickSortInicio(&vetorGrande, 0, tamanhoGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaQuickSortInicio(&vetorGrandeAleartorio, 0, tamanhoGrande, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaQuickSortInicio(&vetorGrande, 0, tamanhoGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaQuickSortInicio(&vetorGrandeAleartorio, 0, tamanhoGrande, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaQuickSortInicio(&vetorGrande, 0, tamanhoGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaQuickSortInicio(&vetorGrandeAleartorio, 0, tamanhoGrande, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -249,43 +253,43 @@ int main(){
                 printf("DEBUG: QuickSort pivo no meio\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaQuickSortMeio(&vetorPequeno, 0, tamanhoPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaQuickSortMeio(&vetorPequenoAleartorio, 0, tamanhoPequeno, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaQuickSortMeio(&vetorPequeno, 0, tamanhoPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaQuickSortMeio(&vetorPequenoAleartorio, 0, tamanhoPequeno, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaQuickSortMeio(&vetorPequeno, 0, tamanhoPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaQuickSortMeio(&vetorPequenoAleartorio, 0, tamanhoPequeno, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaQuickSortMeio(&vetorMedio, 0, tamanhoMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaQuickSortMeio(&vetorMedioAleartorio, 0, tamanhoMedio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaQuickSortMeio(&vetorMedio, 0, tamanhoMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaQuickSortMeio(&vetorMedioAleartorio, 0, tamanhoMedio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaQuickSortMeio(&vetorMedio, 0, tamanhoMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaQuickSortMeio(&vetorMedioAleartorio, 0, tamanhoMedio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaQuickSortMeio(&vetorGrande, 0, tamanhoGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaQuickSortMeio(&vetorGrandeAleartorio, 0, tamanhoGrande, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaQuickSortMeio(&vetorGrande, 0, tamanhoGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaQuickSortMeio(&vetorGrandeAleartorio, 0, tamanhoGrande, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
 
-                chamadaQuickSortMeio(&vetorGrande, 0, tamanhoGrande, tempos, 8);
+                chamadaQuickSortMeio(&vetorGrandeAleartorio, 0, tamanhoGrande, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -294,42 +298,42 @@ int main(){
                 printf("DEBUG: Insertion\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -338,42 +342,42 @@ int main(){
                 printf("DEBUG: Shell\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -382,42 +386,42 @@ int main(){
                 printf("DEBUG: Selection\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -426,42 +430,42 @@ int main(){
                 printf("DEBUG: Heap\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);
@@ -470,42 +474,42 @@ int main(){
                 printf("DEBUG: Merge\n");
                 printf("-=-=Vetor Pequeno=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 0);
+                populaVetorAleartorio(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 0);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 1);
+                populaVetorCrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 1);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorPequeno, tamanhoPequeno);
-                chamadaBubble(&vetorPequeno, tempos, 2);
+                populaVetorDecrescente(&vetorPequenoAleartorio, tamanhoPequeno);
+                chamadaBubble(&vetorPequenoAleartorio, tempos, 2);
 
                 printf("-=-=Vetor Medio=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 3);
+                populaVetorAleartorio(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 3);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 4);
+                populaVetorCrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 4);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorMedio, tamanhoMedio);
-                chamadaBubble(&vetorMedio, tempos, 5);
+                populaVetorDecrescente(&vetorMedioAleartorio, tamanhoMedio);
+                chamadaBubble(&vetorMedioAleartorio, tempos, 5);
 
                 printf("-=-=Vetor Grande=-=-\n");
                 printf("Aleartorio -");
-                populaVetorAleartorio(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 6);
+                populaVetorAleartorio(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 6);
 
                 printf("Ordem crescente -");
-                populaVetorCrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 7);
+                populaVetorCrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 7);
 
                 printf("Ordem decrescente -");
-                populaVetorDecrescente(&vetorGrande, tamanhoGrande);
-                chamadaBubble(&vetorGrande, tempos, 8);
+                populaVetorDecrescente(&vetorGrandeAleartorio, tamanhoGrande);
+                chamadaBubble(&vetorGrandeAleartorio, tempos, 8);
 
                 printf("\nTempos finais: ");
                 for(int i = 0; i < 9; i++) printf("%f ", tempos[i]);

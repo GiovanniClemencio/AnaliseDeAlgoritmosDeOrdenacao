@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1758316480 source:c:\users\portu\desktop\facul\paa\trabalho 1\trabalho1paa\bubble.c
+
+1758673216 source:c:\users\portu\desktop\facul\paa\trabalho 1\trabalho1paa\shellsort.c
+
+1758673162 source:c:\users\portu\desktop\facul\paa\trabalho 1\trabalho1paa\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+
