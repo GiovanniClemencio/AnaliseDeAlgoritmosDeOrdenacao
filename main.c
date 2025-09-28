@@ -81,7 +81,7 @@ int main(){
     srand(time(NULL));
 
     double tempos[81];
-    int seletor = 0, tamanhoPequeno = 1000, tamanhoMedio = 5000, tamanhoGrande = 10000;
+    /*int seletor = 0, tamanhoPequeno = 1000, tamanhoMedio = 5000, tamanhoGrande = 10000;
 
     int vetorPequenoAleartorio[tamanhoPequeno], vetorPequenoDecrescente[tamanhoPequeno], vetorPequenoCrescente[tamanhoPequeno];
     int vetorMedioAleartorio[tamanhoMedio], vetorMedioDecrescente[tamanhoMedio], vetorMedioCrescente[tamanhoMedio];
@@ -111,7 +111,7 @@ int main(){
         printf("7 - Selection Sort\n");
         printf("8 - Heap Sort\n");
         printf("9 - Merge Sort\n");
-        pritnf("10 - TODOS\n");
+        printf("10 - TODOS\n");
         printf("0 - Sair");
 
         scanf("%d", &seletor);
@@ -522,7 +522,7 @@ int main(){
                 seletor = 99;
                 break;
         }
-    }
+    }*/
 
     return 0;
 }

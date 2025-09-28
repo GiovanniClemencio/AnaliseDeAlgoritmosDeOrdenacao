@@ -34,10 +34,16 @@
 		<Unit filename="Bubble.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="QuickSort.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="ShellSort.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="selectionSort.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
