@@ -34,6 +34,15 @@
 		<Unit filename="Bubble.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="HeapSort.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="InsertionSort.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="MergeSort.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="QuickSort.c">
 			<Option compilerVar="CC" />
 		</Unit>
