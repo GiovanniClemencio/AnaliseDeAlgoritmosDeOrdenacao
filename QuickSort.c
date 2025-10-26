@@ -1,45 +1,55 @@
-// pivo no inicio
+void trocar(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 int particionarInicio(int *vetor, int ini, int fim) {
     int pivo = vetor[ini];
-    int i = ini, j = fim;
+    int i = ini - 1;
+    int j = fim + 1;
 
-    while (i < j) {
-        while (i < j && vetor[j] >= pivo) j--; // anda do fim pra trás
-        if (i < j) vetor[i++] = vetor[j];
+    while (1) {
+        do {
+            i++;
+        } while (vetor[i] < pivo);
 
-        while (i < j && vetor[i] <= pivo) i++; // anda do inicio pra frente
-        if (i < j) vetor[j--] = vetor[i];
+        do {
+            j--;
+        } while (vetor[j] > pivo);
+
+        if (i >= j) {
+            return j;
+        }
+
+        trocar(&vetor[i], &vetor[j]);
     }
-
-    vetor[i] = pivo; // coloca o pivo na posição correta
-    return i;
 }
+
+void quickSortInicio(int *vetor, int ini, int fim) {
+    if (ini < fim) {
+        int pos = particionarInicio(vetor, ini, fim);
+
+        quickSortInicio(vetor, ini, pos);
+        quickSortInicio(vetor, pos + 1, fim);
+    }
+}
+
 
 int particionarMeio(int *vetor, int ini, int fim) {
     int meio = (ini + fim) / 2;
 
     // troca o do meio com o primeiro
-    int aux = vetor[meio];
-    vetor[meio] = vetor[ini];
-    vetor[ini] = aux;
+    trocar(&vetor[meio], &vetor[ini]);
 
     return particionarInicio(vetor, ini, fim);
 }
 
-int* quickSortInicio(int *vetor, int ini, int fim) {
-    if (ini < fim) {
-        int pos = particionarInicio(vetor, ini, fim);
-        quickSortInicio(vetor, ini, pos - 1);
-        quickSortInicio(vetor, pos + 1, fim);
-    }
-    return vetor;
-}
 
-int* quickSortMeio(int *vetor, int ini, int fim) {
+void quickSortMeio(int *vetor, int ini, int fim) {
     if (ini < fim) {
         int pos = particionarMeio(vetor, ini, fim);
-        quickSortMeio(vetor, ini, pos - 1);
+        quickSortMeio(vetor, ini, pos );
         quickSortMeio(vetor, pos + 1, fim);
     }
-    return vetor;
 }

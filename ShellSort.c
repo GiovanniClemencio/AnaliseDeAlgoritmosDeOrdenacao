@@ -1,22 +1,24 @@
 int* shellSort(int *vetor, int tamanho){
-    int salto, menor, k;
-    int incrementos[64], indiceIncrementos = 1;
+    int salto, temp, k;
+    int incrementos[64], indiceIncrementos = 0; // Inicia em 0
 
-    incrementos[0] = 1;
-    while(indiceIncrementos < tamanho){
-        incrementos[indiceIncrementos] = 2 * incrementos[indiceIncrementos - 1] - 1; // 2^k - 1
-        indiceIncrementos++;
+    // geração dos Incrementos (Sequência 1, 3, 7, 15, ...)
+    salto = 1;
+    while(salto < tamanho){
+        incrementos[indiceIncrementos++] = salto;
+        salto = 2 * salto + 1;
     }
-    indiceIncrementos--; // Agora está na última posição de incrementos (ou seja no primeiro incremento)
-
-    for(int i = indiceIncrementos; i >=0; i--){ // esse laço é para ir diminuindo os incrementos
+    for(int i = indiceIncrementos - 1; i >= 0; i--){ // laço para ir diminuindo os incrementos
         salto = incrementos[i];
-        for(int j = salto; j < tamanho; j++){ // esse laço é o que seleciona
-            menor = vetor[j];
-            for(k = j - salto; k >= 0 && vetor[k] > menor; k-= salto){
-                vetor[k + salto] = vetor[k];
+
+        for(int j = salto; j < tamanho; j++){
+            temp = vetor[j]; // valor a ser inserido
+
+            // k começa na posição anterior que tem salto de distância
+            for(k = j - salto; k >= 0 && vetor[k] > temp; k-= salto){
+                vetor[k + salto] = vetor[k]; // desloca o elemento
             }
-            vetor[k + salto] = menor;
+            vetor[k + salto] = temp; // insere o valor na posição correta
         }
     }
     return vetor;

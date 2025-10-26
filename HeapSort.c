@@ -8,23 +8,23 @@ void swap(int *a, int *b) {
 }
 
 // max_heapify garante a propriedade de heap a partir de um índice i
-void max_heapify(int A[], int n, int i) {
+void max_heapify(int *vetor, int n, int i) {
     int esq = 2 * i + 1;  // filho esquerdo
     int dir = 2 * i + 2;  // filho direito
     int maior = i;
 
     // se o filho esquerdo é maior que a raiz
-    if (esq < n && A[esq] > A[maior])
+    if (esq < n && vetor[esq] > vetor[maior])
         maior = esq;
 
     // se o filho direito é maior que o "maior" atual
-    if (dir < n && A[dir] > A[maior])
+    if (dir < n && vetor[dir] > vetor[maior])
         maior = dir;
 
     // se o maior não é a raiz
     if (maior != i) {
-        swap(&A[i], &A[maior]);
-        max_heapify(A, n, maior);
+        swap(&vetor[i], &vetor[maior]);
+        max_heapify(vetor, n, maior);
     }
 }
 
@@ -35,14 +35,14 @@ void build_max_heap(int A[], int n) {
     }
 }
 
-void heap_sort(int A[], int n) {
-    build_max_heap(A, n);
+void heapSort(int *vetor, int n) {
+    build_max_heap(vetor, n);
 
     for (int i = n - 1; i > 0; i--) {
         // troca o maior (raiz) com o último elemento
-        swap(&A[0], &A[i]);
+        swap(&vetor[0], &vetor[i]);
 
         // restaura o heap na raiz, considerando tamanho reduzido
-        max_heapify(A, i, 0);
+        max_heapify(vetor, i, 0);
     }
 }
