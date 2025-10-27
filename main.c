@@ -44,7 +44,7 @@ int main() {
 
     fprintf(arquivo, "Tamanho,Algoritmo,Tipo_Entrada,Tempo(s)\n");
 
-    int tamanhos[] = {1000, 5000, 10000, 15000, 20000, 25000, 30000};
+    int tamanhos[] = {1000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 100000, 200000};
     int num_tamanhos = sizeof(tamanhos) / sizeof(tamanhos[0]);
 
     for (int t = 0; t < num_tamanhos; t++) {
@@ -107,21 +107,21 @@ int main() {
         // -------- aleatório do arquivo --------
         carregarVetor(nomeArquivo, vetor, n);
         inicio = clock();
-        quickSortInicio(vetor, 0, n -1);
+        quickSortInicio(vetor, n);
         fim = clock();
         fprintf(arquivo, "%d,QuickSortInicio,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
 
         // -------- crescente --------
         gerarCrescente(vetor, n);
         inicio = clock();
-        quickSortInicio(vetor, 0, n -1);
+        quickSortInicio(vetor, n);
         fim = clock();
         fprintf(arquivo, "%d,QuickSortInicio,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
 
         // -------- decrescente --------
         gerarDecrescente(vetor, n);
         inicio = clock();
-        quickSortInicio(vetor, 0, n -1);
+        quickSortInicio(vetor, n);
         fim = clock();
         fprintf(arquivo, "%d,QuickSortInicio,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
 
@@ -129,21 +129,21 @@ int main() {
         // -------- aleatório do arquivo --------
         carregarVetor(nomeArquivo, vetor, n);
         inicio = clock();
-        quickSortMeio(vetor, 0, n -1);
+        quickSortMeio(vetor, n);
         fim = clock();
         fprintf(arquivo, "%d,QuickSortMeio,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
 
         // -------- crescente --------
         gerarCrescente(vetor, n);
         inicio = clock();
-        quickSortMeio(vetor, 0, n -1);
+        quickSortMeio(vetor, n);
         fim = clock();
         fprintf(arquivo, "%d,QuickSortMeio,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
 
         // -------- decrescente --------
         gerarDecrescente(vetor, n);
         inicio = clock();
-        quickSortMeio(vetor, 0, n -1);
+        quickSortMeio(vetor, n);
         fim = clock();
         fprintf(arquivo, "%d,QuickSortMeio,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
 
