@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include<string.h>
 #include "Bubble.c"
 #include "QuickSort.c"
 #include "InsertionSort.c"
@@ -35,6 +36,53 @@ void gerarDecrescente(int *vetor, int n) {
         vetor[i] = n - i;
 }
 
+// Função para medir tempo médio de execução de um algoritmo
+double medir_tempo_medio(void (*func)(int*, int), int *vetor, int n, const char *tipo, const char *alg, const char *nomeArquivo, int repeticoes) {
+    struct timespec inicio, fim;
+    double soma = 0.0;
+
+    for (int r = 0; r < repeticoes; r++) {
+        if (strcmp(tipo, "Aleatorio") == 0)
+            carregarVetor(nomeArquivo, vetor, n);
+        else if (strcmp(tipo, "Crescente") == 0)
+            gerarCrescente(vetor, n);
+        else
+            gerarDecrescente(vetor, n);
+
+        clock_gettime(CLOCK_MONOTONIC, &inicio);
+        func(vetor, n);
+        clock_gettime(CLOCK_MONOTONIC, &fim);
+
+        double tempo = (fim.tv_sec - inicio.tv_sec) + (fim.tv_nsec - inicio.tv_nsec) / 1e9;
+        soma += tempo;
+    }
+
+    return soma / repeticoes;
+}
+
+double medir_tempo_medio_merge(void (*func)(int*, int, int), int *vetor, int n, const char *tipo, const char *nomeArquivo, int repeticoes) {
+    struct timespec inicio, fim;
+    double soma = 0.0;
+
+    for (int r = 0; r < repeticoes; r++) {
+        if (strcmp(tipo, "Aleatorio") == 0)
+            carregarVetor(nomeArquivo, vetor, n);
+        else if (strcmp(tipo, "Crescente") == 0)
+            gerarCrescente(vetor, n);
+        else
+            gerarDecrescente(vetor, n);
+
+        clock_gettime(CLOCK_MONOTONIC, &inicio);
+        func(vetor, 0, n);
+        clock_gettime(CLOCK_MONOTONIC, &fim);
+
+        double tempo = (fim.tv_sec - inicio.tv_sec) + (fim.tv_nsec - inicio.tv_nsec) / 1e9;
+        soma += tempo;
+    }
+
+    return soma / repeticoes;
+}
+
 int main() {
     FILE *arquivo = fopen("tempos_ordenacao.csv", "w");
     if (!arquivo) {
@@ -42,10 +90,11 @@ int main() {
         return 1;
     }
 
-    fprintf(arquivo, "Tamanho,Algoritmo,Tipo_Entrada,Tempo(s)\n");
+    fprintf(arquivo, "Tamanho,Algoritmo,Tipo_Entrada,Tempo_Medio(s)\n");
 
-    int tamanhos[] = {1000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 100000, 200000};
+    int tamanhos[] = {1000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 100000, 150000, 200000};
     int num_tamanhos = sizeof(tamanhos) / sizeof(tamanhos[0]);
+    int repeticoes = 10; // número de repetições para calcular a média
 
     for (int t = 0; t < num_tamanhos; t++) {
         int n = tamanhos[t];
@@ -58,205 +107,41 @@ int main() {
         char nomeArquivo[50];
         sprintf(nomeArquivo, "vetor_%d.txt", n);
 
-        // BubbleSortClassico
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        clock_t inicio = clock();
-        BubbleSortClassico(vetor, n);
-        clock_t fim = clock();
-        fprintf(arquivo, "%d,BubbleSortClassico,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,BubbleSortClassico,Aleatorio,%.9f\n", n, medir_tempo_medio(BubbleSortClassico, vetor, n, "Aleatorio", "BubbleSortClassico", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,BubbleSortClassico,Crescente,%.9f\n", n, medir_tempo_medio(BubbleSortClassico, vetor, n, "Crescente", "BubbleSortClassico", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,BubbleSortClassico,Decrescente,%.9f\n", n, medir_tempo_medio(BubbleSortClassico, vetor, n, "Decrescente", "BubbleSortClassico", nomeArquivo, repeticoes));
 
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        BubbleSortClassico(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,BubbleSortClassico,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,BubbleSortMelhorado,Aleatorio,%.9f\n", n, medir_tempo_medio(BubbleSortMelhorado, vetor, n, "Aleatorio", "BubbleSortMelhorado", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,BubbleSortMelhorado,Crescente,%.9f\n", n, medir_tempo_medio(BubbleSortMelhorado, vetor, n, "Crescente", "BubbleSortMelhorado", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,BubbleSortMelhorado,Decrescente,%.9f\n", n, medir_tempo_medio(BubbleSortMelhorado, vetor, n, "Decrescente", "BubbleSortMelhorado", nomeArquivo, repeticoes));
 
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        BubbleSortClassico(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,BubbleSortClassico,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,QuickSortInicio,Aleatorio,%.9f\n", n, medir_tempo_medio(quickSortInicio, vetor, n, "Aleatorio", "QuickSortInicio", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,QuickSortInicio,Crescente,%.9f\n", n, medir_tempo_medio(quickSortInicio, vetor, n, "Crescente", "QuickSortInicio", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,QuickSortInicio,Decrescente,%.9f\n", n, medir_tempo_medio(quickSortInicio, vetor, n, "Decrescente", "QuickSortInicio", nomeArquivo, repeticoes));
 
+        fprintf(arquivo, "%d,QuickSortMeio,Aleatorio,%.9f\n", n, medir_tempo_medio(quickSortMeio, vetor, n, "Aleatorio", "QuickSortMeio", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,QuickSortMeio,Crescente,%.9f\n", n, medir_tempo_medio(quickSortMeio, vetor, n, "Crescente", "QuickSortMeio", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,QuickSortMeio,Decrescente,%.9f\n", n, medir_tempo_medio(quickSortMeio, vetor, n, "Decrescente", "QuickSortMeio", nomeArquivo, repeticoes));
 
-        // BubbleSortMelhorado
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        BubbleSortMelhorado(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,BubbleSortMelhorado,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,InsertionSort,Aleatorio,%.9f\n", n, medir_tempo_medio(insertionSort, vetor, n, "Aleatorio", "InsertionSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,InsertionSort,Crescente,%.9f\n", n, medir_tempo_medio(insertionSort, vetor, n, "Crescente", "InsertionSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,InsertionSort,Decrescente,%.9f\n", n, medir_tempo_medio(insertionSort, vetor, n, "Decrescente", "InsertionSort", nomeArquivo, repeticoes));
 
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        BubbleSortMelhorado(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,BubbleSortMelhorado,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,ShellSort,Aleatorio,%.9f\n", n, medir_tempo_medio(shellSort, vetor, n, "Aleatorio", "ShellSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,ShellSort,Crescente,%.9f\n", n, medir_tempo_medio(shellSort, vetor, n, "Crescente", "ShellSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,ShellSort,Decrescente,%.9f\n", n, medir_tempo_medio(shellSort, vetor, n, "Decrescente", "ShellSort", nomeArquivo, repeticoes));
 
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        BubbleSortMelhorado(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,BubbleSortMelhorado,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,SelectionSort,Aleatorio,%.9f\n", n, medir_tempo_medio(selectionSort, vetor, n, "Aleatorio", "SelectionSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,SelectionSort,Crescente,%.9f\n", n, medir_tempo_medio(selectionSort, vetor, n, "Crescente", "SelectionSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,SelectionSort,Decrescente,%.9f\n", n, medir_tempo_medio(selectionSort, vetor, n, "Decrescente", "SelectionSort", nomeArquivo, repeticoes));
 
-        // Quick Sort (com pivô no início)
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        quickSortInicio(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,QuickSortInicio,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
+        fprintf(arquivo, "%d,HeapSort,Aleatorio,%.9f\n", n, medir_tempo_medio(heapSort, vetor, n, "Aleatorio", "HeapSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,HeapSort,Crescente,%.9f\n", n, medir_tempo_medio(heapSort, vetor, n, "Crescente", "HeapSort", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,HeapSort,Decrescente,%.9f\n", n, medir_tempo_medio(heapSort, vetor, n, "Decrescente", "HeapSort", nomeArquivo, repeticoes));
 
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        quickSortInicio(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,QuickSortInicio,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        quickSortInicio(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,QuickSortInicio,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // Quick Sort (com pivô no meio)
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        quickSortMeio(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,QuickSortMeio,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        quickSortMeio(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,QuickSortMeio,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        quickSortMeio(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,QuickSortMeio,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // Insertion Sort
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        insertionSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,InsertionSort,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        insertionSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,InsertionSort,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        insertionSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,InsertionSort,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // Shell Sort
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        shellSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,ShellSort,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        shellSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,ShellSort,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        shellSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,ShellSort,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // Selection Sort
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        selectionSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,SelectionSort,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        selectionSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,SelectionSort,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        selectionSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,SelectionSort,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // Heap Sort
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        heapSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,HeapSort,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        heapSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,HeapSort,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        heapSort(vetor, n);
-        fim = clock();
-        fprintf(arquivo, "%d,HeapSort,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // Merge Sort
-        // -------- aleatório do arquivo --------
-        carregarVetor(nomeArquivo, vetor, n);
-        inicio = clock();
-        MergeSort(vetor,0, n);
-        fim = clock();
-        fprintf(arquivo, "%d,MergeSort,Aleatorio,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- crescente --------
-        gerarCrescente(vetor, n);
-        inicio = clock();
-        MergeSort(vetor,0, n);
-        fim = clock();
-        fprintf(arquivo, "%d,MergeSort,Crescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
-        // -------- decrescente --------
-        gerarDecrescente(vetor, n);
-        inicio = clock();
-        MergeSort(vetor,0, n);
-        fim = clock();
-        fprintf(arquivo, "%d,MergeSort,Decrescente,%.4f\n", n, (double)(fim - inicio) / CLOCKS_PER_SEC);
-
+        fprintf(arquivo, "%d,MergeSort,Aleatorio,%.9f\n", n, medir_tempo_medio_merge(MergeSort, vetor, n, "Aleatorio", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,MergeSort,Crescente,%.9f\n", n, medir_tempo_medio_merge(MergeSort, vetor, n, "Crescente", nomeArquivo, repeticoes));
+        fprintf(arquivo, "%d,MergeSort,Decrescente,%.9f\n", n, medir_tempo_medio_merge(MergeSort, vetor, n, "Decrescente", nomeArquivo, repeticoes));
 
         free(vetor);
     }

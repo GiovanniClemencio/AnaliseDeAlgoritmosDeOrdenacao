@@ -1,4 +1,4 @@
-int* BubbleSortClassico(int *vetor, int tamanho){
+void BubbleSortClassico(int *vetor, int tamanho){
     for(int i = 0 ; i < tamanho; i++){
         for(int j = 0; j < tamanho; j++){
             if(vetor[j] > vetor[j + 1]){
@@ -9,10 +9,9 @@ int* BubbleSortClassico(int *vetor, int tamanho){
         }
     }
 
-    return vetor;
 }
 
-int* BubbleSortMelhorado(int *vetor, int tamanho){
+void BubbleSortMelhorado(int *vetor, int tamanho){
     int troca = 1;
     for(int i = 0 ; i < tamanho; i++){
         troca = 0;
@@ -24,8 +23,6 @@ int* BubbleSortMelhorado(int *vetor, int tamanho){
                 vetor[j + 1] = aux;
             }
         }
-        if(!troca) return vetor;
+        if(!troca) return;
     }
-
-    return vetor;
 }

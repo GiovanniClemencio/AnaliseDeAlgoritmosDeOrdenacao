@@ -1,4 +1,4 @@
-int* shellSort(int *vetor, int tamanho){
+void shellSort(int *vetor, int tamanho){
     int salto, temp, k;
     int incrementos[64], indiceIncrementos = 0; // Inicia em 0
 
@@ -21,6 +21,5 @@ int* shellSort(int *vetor, int tamanho){
             vetor[k + salto] = temp; // insere o valor na posição correta
         }
     }
-    return vetor;
 }
 
